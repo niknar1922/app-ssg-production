@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SSG Dashboard — FloridaFundraiser.com</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:      #07111f;
+  --mid:       #0d1d33;
+  --card:      #101e35;
+  --hover:     #162640;
+  --gold:      #f0b429;
+  --gold-bg:   rgba(240,180,41,0.08);
+  --cream:     #e8eef8;
+  --muted:     #5e7a9e;
+  --green:     #10d98a;
+  --red:       #f05252;
+  --purple:    #a78bfa;
+  --blue:      #4da6ff;
+  --border:    rgba(255,255,255,0.055);
+  --r:         9px;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{font-size:13px}
+body{font-family:'Barlow',sans-serif;background:var(--navy);color:var(--cream);display:flex;min-height:100vh}
+
+/* ── SIDEBAR ── */
+.sb{width:224px;flex-shrink:0;background:var(--mid);border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:100}
+.sb-top{padding:20px 16px 16px;border-bottom:1px solid var(--border)}
+.sb-eyebrow{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:4px}
+.sb-brand{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:17px;color:var(--cream);line-height:1}
+.sb-sub{font-size:10.5px;color:var(--muted);margin-top:3px}
+.sb-nav{flex:1;overflow-y:auto;padding:8px 0}
+.sb-sec{padding:14px 0 2px}
+.sb-sec-lbl{padding:0 16px 4px;font-family:'Barlow Condensed',sans-serif;font-size:8.5px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);opacity:.55}
+.ni{display:flex;align-items:center;gap:9px;padding:7px 16px;font-size:12.5px;font-weight:500;color:#6a85ab;cursor:pointer;transition:all .13s;border-left:2px solid transparent}
+.ni:hover{color:var(--cream);background:rgba(255,255,255,0.025)}
+.ni.on{color:var(--gold);border-left-color:var(--gold);background:var(--gold-bg);font-weight:600}
+.ni-ico{width:15px;text-align:center;font-size:13px;flex-shrink:0}
+.ni-pill{margin-left:auto;background:rgba(240,180,41,.15);color:var(--gold);font-family:'Barlow Condensed',sans-serif;font-size:9.5px;font-weight:700;padding:1px 7px;border-radius:20px}
+.sb-foot{padding:12px 16px;border-top:1px solid var(--border);display:flex;align-items:center;gap:9px}
+.av{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#f5c040);color:var(--navy);font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sb-name{font-size:12px;font-weight:600;color:var(--cream)}
+.sb-role{font-size:10px;color:var(--muted)}
+.sb-out{margin-left:auto;color:var(--muted);font-size:14px;cursor:pointer;opacity:.5;transition:all .13s}
+.sb-out:hover{color:var(--red);opacity:1}
+
+/* ── MAIN ── */
+.main{margin-left:224px;flex:1;display:flex;flex-direction:column;min-height:100vh}
+.topbar{display:flex;align-items:center;padding:14px 28px;border-bottom:1px solid var(--border);background:rgba(7,17,31,.92);backdrop-filter:blur(16px);position:sticky;top:0;z-index:90;gap:12px}
+.topbar-left .day{font-size:10.5px;color:var(--muted);margin-bottom:2px}
+.topbar-left .title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:20px;color:var(--cream)}
+.topbar-right{display:flex;align-items:center;gap:9px;margin-left:auto}
+.chip{font-family:'Barlow Condensed',sans-serif;font-size:10.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;padding:5px 12px;border-radius:5px}
+.chip-blue{background:rgba(77,166,255,.1);color:var(--blue);border:1px solid rgba(77,166,255,.2)}
+.chip-green{background:rgba(16,217,138,.08);color:var(--green);border:1px solid rgba(16,217,138,.15)}
+.seg{display:flex;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:5px;overflow:hidden}
+.seg-b{font-family:'Barlow Condensed',sans-serif;font-size:10.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;padding:5px 12px;border:none;background:transparent;color:var(--muted);cursor:pointer;transition:all .13s}
+.seg-b.on{background:var(--hover);color:var(--cream)}
+.btn{font-family:'Barlow Condensed',sans-serif;font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:6px 15px;border-radius:5px;border:none;cursor:pointer;transition:all .13s}
+.btn-ghost{background:transparent;color:var(--cream);border:1px solid var(--border)}
+.btn-ghost:hover{background:rgba(255,255,255,.04)}
+.btn-gold{background:var(--gold);color:var(--navy)}
+.btn-gold:hover{background:#f5c840;transform:translateY(-1px)}
+
+/* ── CONTENT ── */
+.content{padding:22px 28px;display:flex;flex-direction:column;gap:20px}
+
+/* ── SEASON BAR ── */
+.season-bar{display:grid;grid-template-columns:repeat(10,1fr);gap:8px}
+.sb-cell{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:12px 14px;position:relative;overflow:hidden;cursor:pointer;transition:all .15s}
+.sb-cell:hover{background:var(--hover)}
+.sb-cell.current{border-color:rgba(240,180,41,.3);background:rgba(240,180,41,.05)}
+.sb-cell .s-label{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+.sb-cell .s-val{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:15px;line-height:1;color:var(--cream)}
+.sb-cell .s-ct{font-size:10px;color:var(--muted);margin-top:3px}
+.sb-cell .s-bar{position:absolute;bottom:0;left:0;right:0;height:3px}
+
+/* ── KPI STRIP ── */
+.kpi-strip{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+.kpi{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:16px 18px 14px;position:relative;overflow:hidden;cursor:pointer;transition:transform .16s,box-shadow .16s;animation:up .4s ease both}
+.kpi:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,0,0,.35)}
+.kpi:nth-child(1){animation-delay:.04s}.kpi:nth-child(2){animation-delay:.08s}.kpi:nth-child(3){animation-delay:.12s}.kpi:nth-child(4){animation-delay:.16s}.kpi:nth-child(5){animation-delay:.20s}
+.kpi-line{position:absolute;top:0;left:0;right:0;height:2px}
+.kpi-lbl{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.kpi-val{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:30px;line-height:1;letter-spacing:-.01em}
+.kpi-foot{font-size:10.5px;color:var(--muted);margin-top:5px}
+.kpi-delta{font-size:10.5px;font-weight:600;margin-top:5px}
+.up{color:var(--green)}.dn{color:var(--red)}
+
+/* ── LAYOUT ── */
+.row2{display:grid;grid-template-columns:1fr 308px;gap:18px}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px}
+.col{display:flex;flex-direction:column;gap:18px}
+
+/* ── PANEL ── */
+.panel{background:var(--card);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;animation:up .45s ease .1s both}
+.ph{display:flex;align-items:center;padding:13px 18px;border-bottom:1px solid var(--border);gap:10px}
+.ph-title{font-family:'Barlow Condensed',sans-serif;font-size:11.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--cream)}
+.ph-sub{font-size:10.5px;color:var(--muted)}
+.ph-act{font-family:'Barlow Condensed',sans-serif;font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--gold);cursor:pointer;margin-left:auto;opacity:.8;white-space:nowrap;transition:opacity .13s}
+.ph-act:hover{opacity:1}
+
+/* ── CAMPAIGN TABLE ── */
+.tbl-head{display:grid;grid-template-columns:1fr 110px 105px 100px 70px;gap:8px;padding:7px 18px;background:rgba(255,255,255,.018);border-bottom:1px solid var(--border)}
+.th{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.tbl-row{display:grid;grid-template-columns:1fr 110px 105px 100px 70px;gap:8px;align-items:center;padding:11px 18px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .12s}
+.tbl-row:last-child{border-bottom:none}
+.tbl-row:hover{background:var(--hover)}
+.org{font-size:12.5px;font-weight:600;color:var(--cream);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.org-sub{font-size:10px;color:var(--muted);margin-top:1px}
+.money{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13.5px;color:var(--cream)}
+.money-sub{font-size:9.5px;color:var(--muted);margin-top:1px}
+.prog{display:flex;flex-direction:column;gap:3px}
+.prog-bar{height:3px;background:rgba(255,255,255,.06);border-radius:2px;overflow:hidden}
+.prog-fill{height:100%;border-radius:2px}
+.prog-lbl{font-size:9.5px;color:var(--muted)}
+.badge{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:3px;font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase}
+.badge::before{content:'';width:4px;height:4px;border-radius:50%}
+.b-active{background:rgba(16,217,138,.1);color:var(--green)}.b-active::before{background:var(--green)}
+.b-warm{background:rgba(240,180,41,.1);color:var(--gold)}.b-warm::before{background:var(--gold)}
+.b-pipe{background:rgba(77,166,255,.1);color:var(--blue)}.b-pipe::before{background:var(--blue)}
+.b-done{background:rgba(94,122,158,.1);color:var(--muted)}.b-done::before{background:var(--muted)}
+.b-ap{background:rgba(167,139,250,.1);color:var(--purple)}.b-ap::before{background:var(--purple)}
+.s-tag{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;color:var(--muted);background:rgba(255,255,255,.05);padding:2px 6px;border-radius:3px}
+
+/* ── QA GRID ── */
+.qa-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--border)}
+.qa{background:var(--card);padding:15px 8px;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;transition:background .13s;text-align:center}
+.qa:hover{background:var(--hover)}
+.qa-ico{width:34px;height:34px;display:flex;align-items:center;justify-content:center;border-radius:7px;font-size:17px;background:rgba(240,180,41,.07)}
+.qa-lbl{font-family:'Barlow Condensed',sans-serif;font-size:9.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--cream);line-height:1.2}
+
+/* ── ACTION ITEMS ── */
+.ai{display:flex;align-items:flex-start;gap:10px;padding:11px 18px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .12s}
+.ai:last-child{border-bottom:none}
+.ai:hover{background:var(--hover)}
+.ai-dot{width:19px;height:19px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:9.5px;font-weight:800;flex-shrink:0;margin-top:1px}
+.ai-dot.hi{background:rgba(240,82,82,.14);color:var(--red)}
+.ai-dot.md{background:rgba(240,180,41,.12);color:var(--gold)}
+.ai-dot.lo{background:rgba(77,166,255,.1);color:var(--blue)}
+.ai-txt{font-size:12px;color:#a8bcd8;line-height:1.45}
+.ai-txt strong{color:var(--cream);font-weight:600}
+.ai-due{font-size:9.5px;color:var(--muted);margin-top:2px}
+
+/* ── COUNTY BARS ── */
+.co-row{display:flex;align-items:center;gap:10px;padding:9px 18px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .12s}
+.co-row:last-child{border-bottom:none}
+.co-row:hover{background:var(--hover)}
+.co-name{font-size:12px;font-weight:600;color:var(--cream);width:112px;flex-shrink:0}
+.co-track{flex:1;height:4px;background:rgba(255,255,255,.05);border-radius:2px;overflow:hidden}
+.co-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--gold),#f5c840)}
+.co-amt{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;color:var(--muted);width:54px;text-align:right}
+.co-ct{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;color:var(--muted);opacity:.5;width:22px;text-align:right}
+
+/* ── STORE ROWS ── */
+.st-row{display:flex;align-items:center;justify-content:space-between;padding:10px 18px;border-bottom:1px solid var(--border);gap:10px;cursor:pointer;transition:background .12s}
+.st-row:last-child{border-bottom:none}
+.st-row:hover{background:var(--hover)}
+.st-name{font-size:12.5px;font-weight:600;color:var(--cream)}
+.st-detail{font-size:10px;color:var(--muted);margin-top:1px}
+.st-r{display:flex;flex-direction:column;align-items:flex-end;gap:3px;flex-shrink:0}
+.st-amt{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;color:var(--purple)}
+
+/* ── ACTIVITY ── */
+.act-row{display:flex;align-items:flex-start;gap:10px;padding:10px 18px;border-bottom:1px solid var(--border);transition:background .12s}
+.act-row:last-child{border-bottom:none}
+.act-row:hover{background:var(--hover)}
+.act-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:5px}
+.act-txt{flex:1;font-size:11.5px;color:#8faabf;line-height:1.45}
+.act-txt strong{color:var(--cream);font-weight:600}
+.act-time{font-size:9.5px;color:var(--muted);white-space:nowrap;margin-top:2px}
+
+/* ── SEASON GROWTH CHART ── */
+.chart-wrap{padding:16px 18px 12px}
+.bar-chart{display:flex;align-items:flex-end;gap:6px;height:80px}
+.bar-col{display:flex;flex-direction:column;align-items:center;gap:4px;flex:1}
+.bar{width:100%;border-radius:3px 3px 0 0;transition:height .6s ease;min-height:2px;cursor:pointer}
+.bar:hover{filter:brightness(1.15)}
+.bar-lbl{font-family:'Barlow Condensed',sans-serif;font-size:8.5px;font-weight:700;color:var(--muted);text-transform:uppercase;white-space:nowrap}
+.bar-val{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;color:var(--muted)}
+
+/* ── ANIMATIONS ── */
+@keyframes up{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:rgba(255,255,255,.08);border-radius:2px}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sb">
+  <div class="sb-top">
+    <div class="sb-eyebrow">School Solutions Global</div>
+    <div class="sb-brand">FloridaFundraiser.com</div>
+    <div class="sb-sub">Florida Territory · Rep #001</div>
+  </div>
+  <nav class="sb-nav">
+    <div class="sb-sec">
+      <div class="sb-sec-lbl">Overview</div>
+      <div class="ni on"><span class="ni-ico">▪</span> Dashboard</div>
+      <div class="ni"><span class="ni-ico">📅</span> Season Board <span class="ni-pill">S26</span></div>
+    </div>
+    <div class="sb-sec">
+      <div class="sb-sec-lbl">My Business</div>
+      <div class="ni"><span class="ni-ico">🏫</span> Book of Business <span class="ni-pill">265</span></div>
+      <div class="ni"><span class="ni-ico">📣</span> Campaigns <span class="ni-pill">1,060</span></div>
+      <div class="ni"><span class="ni-ico">👕</span> Apparel &amp; Stores <span class="ni-pill">208</span></div>
+      <div class="ni"><span class="ni-ico">💼</span> Budget Sessions</div>
+    </div>
+    <div class="sb-sec">
+      <div class="sb-sec-lbl">Tools</div>
+      <div class="ni"><span class="ni-ico">🌐</span> My Rep Page</div>
+      <div class="ni"><span class="ni-ico">🗺</span> Territory Map</div>
+      <div class="ni"><span class="ni-ico">📦</span> Catalog</div>
+    </div>
+    <div class="sb-sec">
+      <div class="sb-sec-lbl">Admin</div>
+      <div class="ni"><span class="ni-ico">📊</span> Reports</div>
+      <div class="ni"><span class="ni-ico">⚙️</span> Settings</div>
+    </div>
+  </nav>
+  <div class="sb-foot">
+    <div class="av">CR</div>
+    <div>
+      <div class="sb-name">Charlie Rankin</div>
+      <div class="sb-role">Founder · Active</div>
+    </div>
+    <div class="sb-out" title="Log out">⇥</div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+
+  <header class="topbar">
+    <div class="topbar-left">
+      <div class="day">Friday, May 8, 2026 · Good morning</div>
+      <div class="title">Good Morning, Charlie ☀</div>
+    </div>
+    <div class="topbar-right">
+      <div class="chip chip-blue">Spring '26 Season</div>
+      <div class="chip chip-green">61 Campaigns Running</div>
+      <div class="seg">
+        <button class="seg-b">F25</button>
+        <button class="seg-b on">S26</button>
+        <button class="seg-b">All Time</button>
+      </div>
+      <button class="btn btn-ghost">+ New School</button>
+      <button class="btn btn-gold">+ New Campaign</button>
+    </div>
+  </header>
+
+  <div class="content">
+
+    <!-- KPI STRIP — REAL DATA -->
+    <div class="kpi-strip">
+      <div class="kpi">
+        <div class="kpi-line" style="background:var(--gold)"></div>
+        <div class="kpi-lbl">Lifetime Raised</div>
+        <div class="kpi-val" style="color:var(--gold)">$7.54M</div>
+        <div class="kpi-foot">1,060 campaigns · 2021–present</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-line" style="background:var(--green)"></div>
+        <div class="kpi-lbl">Net Profit (All Time)</div>
+        <div class="kpi-val" style="color:var(--green)">$2.02M</div>
+        <div class="kpi-delta up">↑ F25 profit: $1.17M</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-line" style="background:var(--blue)"></div>
+        <div class="kpi-lbl">S26 Season Raised</div>
+        <div class="kpi-val" style="color:var(--blue)">$204K</div>
+        <div class="kpi-foot">61 campaigns · season in progress</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-line" style="background:var(--purple)"></div>
+        <div class="kpi-lbl">Apparel Stores</div>
+        <div class="kpi-val" style="color:var(--purple)">208</div>
+        <div class="kpi-foot">$127.9K invoiced · $43.3K net</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-line" style="background:var(--muted)"></div>
+        <div class="kpi-lbl">Territory</div>
+        <div class="kpi-val" style="color:var(--cream)">265</div>
+        <div class="kpi-foot">Organizations · 50+ FL counties</div>
+      </div>
+    </div>
+
+    <!-- SEASON GROWTH BAR CHART -->
+    <div class="panel">
+      <div class="ph">
+        <div class="ph-title">Season-by-Season Revenue</div>
+        <div class="ph-sub" style="margin-left:8px">2021 – S26 current</div>
+        <div class="ph-act">Full Report →</div>
+      </div>
+      <div class="chart-wrap">
+        <div class="bar-chart" id="barChart"></div>
+      </div>
+    </div>
+
+    <!-- S26 CAMPAIGNS + RIGHT COL -->
+    <div class="row2">
+
+      <!-- S26 ACTIVE CAMPAIGNS TABLE -->
+      <div class="panel">
+        <div class="ph">
+          <div class="ph-title">S26 Campaigns</div>
+          <div class="ph-sub" style="margin-left:8px">Spring 2026 · 61 running</div>
+          <div class="ph-act">View All 61 →</div>
+        </div>
+        <div class="tbl-head">
+          <div class="th">Organization</div>
+          <div class="th">Raised</div>
+          <div class="th">vs Goal</div>
+          <div class="th">Type</div>
+          <div class="th">Status</div>
+        </div>
+
+        <!-- Real S26 data top orgs -->
+        <div class="tbl-row">
+          <div><div class="org">Hendrickson High School</div><div class="org-sub">Band · S26</div></div>
+          <div><div class="money">$25,031</div><div class="money-sub">of $70,000 goal</div></div>
+          <div class="prog"><div class="prog-bar"><div class="prog-fill" style="width:36%;background:var(--blue)"></div></div><div class="prog-lbl">36%</div></div>
+          <div><span class="badge b-active">Donation</span></div>
+          <div><span class="s-tag">S26</span></div>
+        </div>
+        <div class="tbl-row">
+          <div><div class="org">Sandalwood High School</div><div class="org-sub">Band · S26</div></div>
+          <div><div class="money">$24,140</div><div class="money-sub">of $5,000 goal</div></div>
+          <div class="prog"><div class="prog-bar"><div class="prog-fill" style="width:100%;background:var(--green)"></div></div><div class="prog-lbl">483% — Ended</div></div>
+          <div><span class="badge b-active">Donation</span></div>
+          <div><span class="s-tag">S26</span></div>
+        </div>
+        <div class="tbl-row">
+          <div><div class="org">Marshall Middle Magnet</div><div class="org-sub">Band · S26</div></div>
+          <div><div class="money">$12,443</div><div class="money-sub">of $35,000 goal</div></div>
+          <div class="prog"><div class="prog-bar"><div class="prog-fill" style="width:36%;background:var(--blue)"></div></div><div class="prog-lbl">36%</div></div>
+          <div><span class="badge b-active">Donation</span></div>
+          <div><span class="s-tag">S26</span></div>
+        </div>
+        <div class="tbl-row">
+          <div><div class="org">Alice B. Landrum Middle School</div><div class="org-sub">Band · S26</div></div>
+          <div><div class="money">$9,175</div><div class="money-sub">of $5,000 goal</div></div>
+          <div class="prog"><div class="prog-bar"><div class="prog-fill" style="width:100%;background:var(--green)"></div></div><div class="prog-lbl">184% — Over goal</div></div>
+          <div><span class="badge b-active">Donation</span></div>
+          <div><span class="s-tag">S26</span></div>
+        </div>
+        <div class="tbl-row">
+          <div><div class="org">Deltona Middle School</div><div class="org-sub">Chorus · S26</div></div>
+          <div><div class="money">$8,822</div><div class="money-sub">of $15,000 goal</div></div>
+          <div class="prog"><div class="prog-bar"><div class="prog-fill" style="width:59%;background:var(--gold)"></div></div><div class="prog-lbl">59%</div></div>
+          <div><span class="badge b-active">Donation</span></div>
+          <div><span class="s-tag">S26</span></div>
+        </div>
+        <div class="tbl-row">
+          <div><div class="org">Tohopekaliga High School</div><div class="org-sub">Band · S26</div></div>
+          <div><div class="money">$8,642</div><div class="money-sub">of $10,000 goal</div></div>
+          <div class="prog"><div class="prog-bar"><div class="prog-fill" style="width:86%;background:var(--gold)"></div></div><div class="prog-lbl">86%</div></div>
+          <div><span class="badge b-active">Donation</span></div>
+          <div><span class="s-tag">S26</span></div>
+        </div>
+        <div class="tbl-row">
+          <div><div class="org">Markham Woods Middle School</div><div class="org-sub">Chorus · S26</div></div>
+          <div><div class="money">$8,047</div><div class="money-sub">of $15,000 goal</div></div>
+          <div class="prog"><div class="prog-bar"><div class="prog-fill" style="width:54%;background:var(--blue)"></div></div><div class="prog-lbl">54%</div></div>
+          <div><span class="badge b-active">Donation</span></div>
+          <div><span class="s-tag">S26</span></div>
+        </div>
+        <div class="tbl-row">
+          <div><div class="org">Bridgewater Middle School</div><div class="org-sub">Band · S26</div></div>
+          <div><div class="money">$6,339</div><div class="money-sub">of $10,000 goal</div></div>
+          <div class="prog"><div class="prog-bar"><div class="prog-fill" style="width:63%;background:var(--gold)"></div></div><div class="prog-lbl">63%</div></div>
+          <div><span class="badge b-active">Donation</span></div>
+          <div><span class="s-tag">S26</span></div>
+        </div>
+        <div class="tbl-row">
+          <div><div class="org">Spruce Creek High School</div><div class="org-sub">Band · S26</div></div>
+          <div><div class="money">$6,793</div><div class="money-sub">of $5,000 goal</div></div>
+          <div class="prog"><div class="prog-bar"><div class="prog-fill" style="width:100%;background:var(--green)"></div></div><div class="prog-lbl">136% — Over goal</div></div>
+          <div><span class="badge b-active">Donation</span></div>
+          <div><span class="s-tag">S26</span></div>
+        </div>
+        <div class="tbl-row">
+          <div><div class="org">Sarasota High School</div><div class="org-sub">Band · S26 · Active</div></div>
+          <div><div class="money">$845</div><div class="money-sub">of $10,000 goal</div></div>
+          <div class="prog"><div class="prog-bar"><div class="prog-fill" style="width:8%;background:var(--red)"></div></div><div class="prog-lbl">8% — needs attention</div></div>
+          <div><span class="badge b-active">Donation</span></div>
+          <div><span class="s-tag">S26</span></div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT COLUMN -->
+      <div class="col">
+
+        <!-- QUICK ACTIONS -->
+        <div class="panel">
+          <div class="ph"><div class="ph-title">Quick Actions</div></div>
+          <div class="qa-grid">
+            <div class="qa"><div class="qa-ico">🏫</div><div class="qa-lbl">Add School</div></div>
+            <div class="qa"><div class="qa-ico">📣</div><div class="qa-lbl">New Campaign</div></div>
+            <div class="qa"><div class="qa-ico">🌐</div><div class="qa-lbl">Edit My Page</div></div>
+            <div class="qa"><div class="qa-ico">💼</div><div class="qa-lbl">Budget Session</div></div>
+            <div class="qa"><div class="qa-ico">👕</div><div class="qa-lbl">New Store</div></div>
+            <div class="qa"><div class="qa-ico">📊</div><div class="qa-lbl">Run Report</div></div>
+          </div>
+        </div>
+
+        <!-- TODAY'S ACTIONS -->
+        <div class="panel">
+          <div class="ph">
+            <div class="ph-title">Today's Actions</div>
+            <div class="ph-act">4 items</div>
+          </div>
+          <div class="ai">
+            <div class="ai-dot hi">!</div>
+            <div>
+              <div class="ai-txt"><strong>Sarasota HS</strong> — S26 at only 8%. Early momentum matters. Send director nudge.</div>
+              <div class="ai-due">Act today</div>
+            </div>
+          </div>
+          <div class="ai">
+            <div class="ai-dot hi">!</div>
+            <div>
+              <div class="ai-txt"><strong>Green Cove Springs JH</strong> — F25 campaign at $0. Confirm launch or close.</div>
+              <div class="ai-due">Act today</div>
+            </div>
+          </div>
+          <div class="ai">
+            <div class="ai-dot md">3</div>
+            <div>
+              <div class="ai-txt"><strong>Hendrickson HS</strong> — 36% of $70K goal. Midpoint check-in call.</div>
+              <div class="ai-due">This week</div>
+            </div>
+          </div>
+          <div class="ai">
+            <div class="ai-dot lo">4</div>
+            <div>
+              <div class="ai-txt"><strong>Calvary Chapel Band</strong> — invoice sent, awaiting payment. Follow up.</div>
+              <div class="ai-due">This week</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- BOTTOM ROW -->
+    <div class="row3">
+
+      <!-- COUNTY REVENUE -->
+      <div class="panel">
+        <div class="ph">
+          <div class="ph-title">Revenue by County</div>
+          <div class="ph-sub" style="margin-left:6px">Lifetime</div>
+          <div class="ph-act">Territory Map →</div>
+        </div>
+        <div class="co-row"><div class="co-name">Orange County</div><div class="co-track"><div class="co-fill" style="width:100%"></div></div><div class="co-amt">$2.19M</div><div class="co-ct">48</div></div>
+        <div class="co-row"><div class="co-name">Brevard County</div><div class="co-track"><div class="co-fill" style="width:35%"></div></div><div class="co-amt">$772K</div><div class="co-ct">17</div></div>
+        <div class="co-row"><div class="co-name">Hillsborough Co.</div><div class="co-track"><div class="co-fill" style="width:26%"></div></div><div class="co-amt">$577K</div><div class="co-ct">13</div></div>
+        <div class="co-row"><div class="co-name">St. Johns County</div><div class="co-track"><div class="co-fill" style="width:23%"></div></div><div class="co-amt">$493K</div><div class="co-ct">12</div></div>
+        <div class="co-row"><div class="co-name">Clay County</div><div class="co-track"><div class="co-fill" style="width:20%"></div></div><div class="co-amt">$431K</div><div class="co-ct">11</div></div>
+        <div class="co-row"><div class="co-name">Volusia County</div><div class="co-track"><div class="co-fill" style="width:19%"></div></div><div class="co-amt">$413K</div><div class="co-ct">11</div></div>
+        <div class="co-row"><div class="co-name">Okaloosa County</div><div class="co-track"><div class="co-fill" style="width:12%"></div></div><div class="co-amt">$267K</div><div class="co-ct">6</div></div>
+      </div>
+
+      <!-- APPAREL STORES — REAL DATA -->
+      <div class="panel">
+        <div class="ph">
+          <div class="ph-title">Apparel &amp; Stores</div>
+          <div class="ph-sub" style="margin-left:6px">208 total · $127.9K invoiced</div>
+          <div class="ph-act">View All →</div>
+        </div>
+        <div class="st-row">
+          <div><div class="st-name">Spring Valley HS Hawaiian Shirts</div><div class="st-detail">Order Complete · S25</div></div>
+          <div class="st-r"><span class="badge b-done">Complete</span><div class="st-amt">$7,638</div></div>
+        </div>
+        <div class="st-row">
+          <div><div class="st-name">Cuttime Meeting Gift Bags</div><div class="st-detail">Invoice Sent · F25</div></div>
+          <div class="st-r"><span class="badge b-warm">Invoiced</span><div class="st-amt">$6,109</div></div>
+        </div>
+        <div class="st-row">
+          <div><div class="st-name">Sandalwood HS AFJROTC</div><div class="st-detail">Order Complete · S25</div></div>
+          <div class="st-r"><span class="badge b-done">Complete</span><div class="st-amt">$5,280</div></div>
+        </div>
+        <div class="st-row">
+          <div><div class="st-name">Fort Mill Elementary Fun Run</div><div class="st-detail">Order Complete · F25</div></div>
+          <div class="st-r"><span class="badge b-done">Complete</span><div class="st-amt">$4,885</div></div>
+        </div>
+        <div class="st-row">
+          <div><div class="st-name">Fleming Island HS Band Hoodies</div><div class="st-detail">Shipped · F25</div></div>
+          <div class="st-r"><span class="badge b-ap">Shipped</span><div class="st-amt">$4,067</div></div>
+        </div>
+        <div class="st-row">
+          <div><div class="st-name">Ridgeview HS Performance Top</div><div class="st-detail">Invoice Sent · F25</div></div>
+          <div class="st-r"><span class="badge b-warm">Invoiced</span><div class="st-amt">$3,927</div></div>
+        </div>
+        <div class="st-row">
+          <div><div class="st-name">Calvary Chapel Band T-Shirt</div><div class="st-detail">Invoice Sent · F25</div></div>
+          <div class="st-r"><span class="badge b-warm">Invoiced</span><div class="st-amt">$545</div></div>
+        </div>
+      </div>
+
+      <!-- ACTIVITY FEED -->
+      <div class="panel">
+        <div class="ph">
+          <div class="ph-title">Recent Activity</div>
+          <div class="ph-act">View Log →</div>
+        </div>
+        <div class="act-row">
+          <div class="act-dot" style="background:var(--green)"></div>
+          <div style="flex:1">
+            <div class="act-txt"><strong>Sandalwood HS</strong> — S26 Band hit 483% of goal · $24,140 raised</div>
+            <div class="act-time">Today</div>
+          </div>
+        </div>
+        <div class="act-row">
+          <div class="act-dot" style="background:var(--green)"></div>
+          <div style="flex:1">
+            <div class="act-txt"><strong>Spruce Creek HS</strong> — S26 Band over goal · $6,793 vs $5K target</div>
+            <div class="act-time">Today</div>
+          </div>
+        </div>
+        <div class="act-row">
+          <div class="act-dot" style="background:var(--purple)"></div>
+          <div style="flex:1">
+            <div class="act-txt"><strong>Spring Valley HS</strong> — Hawaiian Shirts store fulfilled · $7,638</div>
+            <div class="act-time">Yesterday</div>
+          </div>
+        </div>
+        <div class="act-row">
+          <div class="act-dot" style="background:var(--blue)"></div>
+          <div style="flex:1">
+            <div class="act-txt"><strong>Alice B. Landrum MS</strong> — S26 at 184% · $9,175 raised</div>
+            <div class="act-time">2 days ago</div>
+          </div>
+        </div>
+        <div class="act-row">
+          <div class="act-dot" style="background:var(--gold)"></div>
+          <div style="flex:1">
+            <div class="act-txt"><strong>Ridgeview HS Performance Tops</strong> — invoice sent · $3,927</div>
+            <div class="act-time">3 days ago</div>
+          </div>
+        </div>
+        <div class="act-row">
+          <div class="act-dot" style="background:var(--green)"></div>
+          <div style="flex:1">
+            <div class="act-txt"><strong>Tohopekaliga HS</strong> — S26 Band at 86% of $10K goal</div>
+            <div class="act-time">4 days ago</div>
+          </div>
+        </div>
+        <div class="act-row">
+          <div class="act-dot" style="background:var(--muted)"></div>
+          <div style="flex:1">
+            <div class="act-txt"><strong>F25 season closed</strong> — $1.46M raised · $1.17M net profit · 167 campaigns</div>
+            <div class="act-time">Last week</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div><!-- /content -->
+</main>
+
+<script>
+// Build season bar chart from real data
+const seasons = [
+  {label:'F21', val:237988, ct:24},
+  {label:'S22', val:152948, ct:16},
+  {label:'F22', val:728111, ct:93},
+  {label:'S23', val:271104, ct:57},
+  {label:'F23', val:1632424, ct:192},
+  {label:'S24', val:646393, ct:125},
+  {label:'F24', val:1629382, ct:181},
+  {label:'S25', val:580025, ct:144},
+  {label:'F25', val:1461542, ct:167},
+  {label:'S26', val:204066, ct:61, current:true},
+];
+
+const max = Math.max(...seasons.map(s => s.val));
+const chart = document.getElementById('barChart');
+
+seasons.forEach(s => {
+  const pct = Math.max(4, Math.round((s.val / max) * 100));
+  const isCurrent = s.current;
+  const col = document.createElement('div');
+  col.className = 'bar-col';
+  col.innerHTML = `
+    <div class="bar" style="height:${pct}%;background:${isCurrent ? 'rgba(240,180,41,0.7)' : 'rgba(77,166,255,0.35)'};border-top:2px solid ${isCurrent ? 'var(--gold)' : 'var(--blue)'}" title="${s.label}: $${(s.val/1000).toFixed(0)}K · ${s.ct} campaigns"></div>
+    <div class="bar-lbl">${s.label}</div>
+  `;
+  chart.appendChild(col);
+});
+
+// Segment toggle
+document.querySelectorAll('.seg-b').forEach(b => {
+  b.addEventListener('click', () => {
+    document.querySelectorAll('.seg-b').forEach(x => x.classList.remove('on'));
+    b.classList.add('on');
+  });
+});
+</script>
+</body>
+</html>
