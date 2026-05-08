@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Melbourne High School — SSG</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:    #07111f;
+  --mid:     #0d1d33;
+  --card:    #101e35;
+  --hover:   #162640;
+  --gold:    #f0b429;
+  --cream:   #e8eef8;
+  --muted:   #5e7a9e;
+  --green:   #10d98a;
+  --red:     #f05252;
+  --purple:  #a78bfa;
+  --blue:    #4da6ff;
+  --orange:  #fb923c;
+  --border:  rgba(255,255,255,0.055);
+  --r:       9px;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{font-size:13px}
+body{font-family:'Barlow',sans-serif;background:var(--navy);color:var(--cream);display:flex;min-height:100vh}
+
+/* ── SIDEBAR ── */
+.sb{width:224px;flex-shrink:0;background:var(--mid);border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:100}
+.sb-top{padding:20px 16px 16px;border-bottom:1px solid var(--border)}
+.sb-eyebrow{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:4px}
+.sb-brand{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:17px;color:var(--cream);line-height:1}
+.sb-sub{font-size:10.5px;color:var(--muted);margin-top:3px}
+.sb-nav{flex:1;overflow-y:auto;padding:8px 0}
+.sb-sec{padding:14px 0 2px}
+.sb-sec-lbl{padding:0 16px 4px;font-family:'Barlow Condensed',sans-serif;font-size:8.5px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);opacity:.55}
+.ni{display:flex;align-items:center;gap:9px;padding:7px 16px;font-size:12.5px;font-weight:500;color:#6a85ab;cursor:pointer;transition:all .13s;border-left:2px solid transparent}
+.ni:hover{color:var(--cream);background:rgba(255,255,255,.025)}
+.ni.on{color:var(--gold);border-left-color:var(--gold);background:rgba(240,180,41,.08);font-weight:600}
+.ni-ico{width:15px;text-align:center;font-size:13px;flex-shrink:0}
+.ni-pill{margin-left:auto;background:rgba(240,180,41,.15);color:var(--gold);font-family:'Barlow Condensed',sans-serif;font-size:9.5px;font-weight:700;padding:1px 7px;border-radius:20px}
+.sb-foot{padding:12px 16px;border-top:1px solid var(--border);display:flex;align-items:center;gap:9px}
+.av{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#f5c040);color:var(--navy);font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sb-name{font-size:12px;font-weight:600;color:var(--cream)}
+.sb-role{font-size:10px;color:var(--muted)}
+
+/* ── MAIN ── */
+.main{margin-left:224px;flex:1;display:flex;flex-direction:column;min-height:100vh}
+
+/* ── TOPBAR ── */
+.topbar{display:flex;align-items:center;padding:13px 28px;border-bottom:1px solid var(--border);background:rgba(7,17,31,.92);backdrop-filter:blur(16px);position:sticky;top:0;z-index:90;gap:10px}
+.breadcrumb{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted)}
+.breadcrumb a{color:var(--muted);cursor:pointer;transition:color .13s}
+.breadcrumb a:hover{color:var(--cream)}
+.breadcrumb span{color:var(--muted);opacity:.4}
+.breadcrumb strong{color:var(--cream);font-weight:600}
+.topbar-actions{display:flex;align-items:center;gap:8px;margin-left:auto}
+.btn{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:6px 14px;border-radius:5px;border:none;cursor:pointer;transition:all .13s}
+.btn-ghost{background:transparent;color:var(--cream);border:1px solid var(--border)}
+.btn-ghost:hover{background:rgba(255,255,255,.04)}
+.btn-gold{background:var(--gold);color:var(--navy)}
+.btn-gold:hover{background:#f5c840}
+.btn-outline{background:transparent;color:var(--blue);border:1px solid rgba(77,166,255,.25)}
+.btn-outline:hover{background:rgba(77,166,255,.07)}
+
+/* ── CONTENT ── */
+.content{padding:24px 28px;display:flex;flex-direction:column;gap:20px}
+
+/* ── SCHOOL HEADER ── */
+.school-header{background:var(--card);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
+
+.sh-hero{
+  padding:24px 28px 20px;
+  background:linear-gradient(135deg, rgba(16,30,53,1) 0%, rgba(10,20,40,1) 100%);
+  border-bottom:1px solid var(--border);
+  position:relative;
+  overflow:hidden;
+}
+
+.sh-hero::before{
+  content:'';
+  position:absolute;
+  top:-40px; right:-40px;
+  width:200px; height:200px;
+  border-radius:50%;
+  background:radial-gradient(circle, rgba(240,180,41,.06) 0%, transparent 70%);
+}
+
+.sh-top{display:flex;align-items:flex-start;gap:18px}
+
+.school-logo-placeholder{
+  width:56px;height:56px;border-radius:10px;
+  background:linear-gradient(135deg,rgba(240,180,41,.15),rgba(240,180,41,.05));
+  border:1px solid rgba(240,180,41,.2);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:18px;
+  color:var(--gold);flex-shrink:0;
+}
+
+.sh-title-block{flex:1}
+.sh-name{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:26px;color:var(--cream);letter-spacing:.01em;line-height:1}
+.sh-meta{display:flex;align-items:center;gap:10px;margin-top:6px;flex-wrap:wrap}
+.sh-meta-item{font-size:11.5px;color:var(--muted);display:flex;align-items:center;gap:4px}
+.sh-meta-item::before{content:'';width:3px;height:3px;border-radius:50%;background:var(--muted);opacity:.4}
+.sh-meta-item:first-child::before{display:none}
+
+.sh-badges{display:flex;align-items:center;gap:7px;margin-top:10px}
+
+.sh-kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:0;margin-top:0;border-top:1px solid var(--border)}
+.sh-kpi{padding:14px 20px;border-right:1px solid var(--border);position:relative}
+.sh-kpi:last-child{border-right:none}
+.sh-kpi-lbl{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
+.sh-kpi-val{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:22px;color:var(--cream);line-height:1}
+.sh-kpi-sub{font-size:10px;color:var(--muted);margin-top:3px}
+
+/* ── TABS ── */
+.tabs{display:flex;gap:0;background:rgba(255,255,255,.02);border-bottom:1px solid var(--border);padding:0 28px}
+.tab{font-family:'Barlow Condensed',sans-serif;font-size:11.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:12px 16px;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent;transition:all .13s;display:flex;align-items:center;gap:6px}
+.tab:hover{color:var(--cream)}
+.tab.on{color:var(--gold);border-bottom-color:var(--gold)}
+.tab-ct{font-size:9px;background:rgba(255,255,255,.08);padding:1px 6px;border-radius:10px}
+.tab.on .tab-ct{background:rgba(240,180,41,.15);color:var(--gold)}
+
+/* ── TAB CONTENT ── */
+.tab-content{display:none}
+.tab-content.on{display:block}
+
+/* ── TWO COL ── */
+.row2{display:grid;grid-template-columns:1fr 300px;gap:18px}
+.col{display:flex;flex-direction:column;gap:18px}
+
+/* ── PANEL ── */
+.panel{background:var(--card);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
+.ph{display:flex;align-items:center;padding:13px 18px;border-bottom:1px solid var(--border);gap:10px}
+.ph-title{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--cream)}
+.ph-sub{font-size:10.5px;color:var(--muted)}
+.ph-act{font-family:'Barlow Condensed',sans-serif;font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--gold);cursor:pointer;margin-left:auto;opacity:.8;transition:opacity .13s}
+.ph-act:hover{opacity:1}
+
+/* ── CONTACTS ── */
+.contact-card{display:flex;align-items:center;gap:12px;padding:13px 18px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .13s}
+.contact-card:last-child{border-bottom:none}
+.contact-card:hover{background:var(--hover)}
+.c-av{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:12px;color:var(--navy);flex-shrink:0}
+.c-name{font-size:13px;font-weight:600;color:var(--cream)}
+.c-title{font-size:10.5px;color:var(--muted);margin-top:1px}
+.c-actions{margin-left:auto;display:flex;gap:7px}
+.c-btn{width:28px;height:28px;border-radius:6px;border:1px solid var(--border);background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:13px;transition:all .13s;color:var(--muted)}
+.c-btn:hover{background:var(--hover);color:var(--cream)}
+.c-last{font-size:10px;color:var(--muted);margin-top:2px}
+
+/* ── CAMPAIGN TABLE ── */
+.camp-head{display:grid;grid-template-columns:28px 1fr 80px 90px 90px 80px 70px;gap:8px;padding:7px 18px;background:rgba(255,255,255,.018);border-bottom:1px solid var(--border)}
+.th{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.camp-row{display:grid;grid-template-columns:28px 1fr 80px 90px 90px 80px 70px;gap:8px;align-items:center;padding:11px 18px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .12s}
+.camp-row:last-child{border-bottom:none}
+.camp-row:hover{background:var(--hover)}
+.season-ico{width:22px;height:22px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:800;letter-spacing:.03em}
+.ico-f{background:rgba(240,180,41,.12);color:var(--gold)}
+.ico-s{background:rgba(77,166,255,.1);color:var(--blue)}
+.camp-name{font-size:12.5px;font-weight:600;color:var(--cream);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.camp-sub{font-size:10px;color:var(--muted);margin-top:1px}
+.money{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;color:var(--cream)}
+.money-sub{font-size:9.5px;color:var(--muted);margin-top:1px}
+.prog{display:flex;flex-direction:column;gap:3px}
+.prog-bar{height:3px;background:rgba(255,255,255,.06);border-radius:2px;overflow:hidden}
+.prog-fill{height:100%;border-radius:2px}
+.profit-val{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:12px}
+.badge{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:3px;font-family:'Barlow Condensed',sans-serif;font-size:9.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase}
+.badge::before{content:'';width:4px;height:4px;border-radius:50%}
+.b-done{background:rgba(94,122,158,.1);color:var(--muted)}.b-done::before{background:var(--muted)}
+.b-active{background:rgba(16,217,138,.1);color:var(--green)}.b-active::before{background:var(--green)}
+.b-product{background:rgba(251,146,60,.1);color:var(--orange)}.b-product::before{background:var(--orange)}
+.b-donation{background:rgba(77,166,255,.1);color:var(--blue)}.b-donation::before{background:var(--blue)}
+.b-ap{background:rgba(167,139,250,.1);color:var(--purple)}.b-ap::before{background:var(--purple)}
+
+/* ── STORE ROW ── */
+.store-row{display:grid;grid-template-columns:1fr 110px 90px 80px 80px;gap:8px;align-items:center;padding:11px 18px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .12s}
+.store-row:last-child{border-bottom:none}
+.store-row:hover{background:var(--hover)}
+.store-head{display:grid;grid-template-columns:1fr 110px 90px 80px 80px;gap:8px;padding:7px 18px;background:rgba(255,255,255,.018);border-bottom:1px solid var(--border)}
+
+/* ── TIMELINE / NOTES ── */
+.note-item{display:flex;gap:12px;padding:13px 18px;border-bottom:1px solid var(--border)}
+.note-item:last-child{border-bottom:none}
+.note-line{display:flex;flex-direction:column;align-items:center;gap:0;flex-shrink:0}
+.note-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;margin-top:3px}
+.note-stem{width:1px;flex:1;background:var(--border);margin-top:4px}
+.note-body{flex:1}
+.note-who{font-size:12px;font-weight:600;color:var(--cream)}
+.note-text{font-size:11.5px;color:#8faabf;line-height:1.5;margin-top:3px}
+.note-time{font-size:10px;color:var(--muted);margin-top:4px}
+
+/* ── SEASON SUMMARY CHART ── */
+.season-chart{padding:16px 18px 8px}
+.sc-bars{display:flex;align-items:flex-end;gap:5px;height:70px;margin-bottom:8px}
+.sc-col{display:flex;flex-direction:column;align-items:center;gap:3px;flex:1}
+.sc-bar{width:100%;border-radius:3px 3px 0 0;min-height:2px;cursor:pointer;transition:filter .15s}
+.sc-bar:hover{filter:brightness(1.2)}
+.sc-lbl{font-family:'Barlow Condensed',sans-serif;font-size:8px;font-weight:700;color:var(--muted);text-transform:uppercase}
+.sc-val{font-family:'Barlow Condensed',sans-serif;font-size:8.5px;font-weight:700;color:var(--muted)}
+
+/* ── PROGRAM TAGS ── */
+.prog-tags{display:flex;gap:6px;flex-wrap:wrap;padding:14px 18px}
+.ptag{font-family:'Barlow Condensed',sans-serif;font-size:10.5px;font-weight:700;letter-spacing:.05em;padding:4px 12px;border-radius:20px;border:1px solid}
+
+/* ── ANIMATIONS ── */
+@keyframes up{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.panel{animation:up .4s ease both}
+.panel:nth-child(2){animation-delay:.06s}
+.panel:nth-child(3){animation-delay:.1s}
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:rgba(255,255,255,.08);border-radius:2px}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sb">
+  <div class="sb-top">
+    <div class="sb-eyebrow">School Solutions Global</div>
+    <div class="sb-brand">FloridaFundraiser.com</div>
+    <div class="sb-sub">Florida Territory · Rep #001</div>
+  </div>
+  <nav class="sb-nav">
+    <div class="sb-sec">
+      <div class="sb-sec-lbl">Overview</div>
+      <div class="ni"><span class="ni-ico">▪</span> Dashboard</div>
+      <div class="ni"><span class="ni-ico">📅</span> Season Board <span class="ni-pill">S26</span></div>
+    </div>
+    <div class="sb-sec">
+      <div class="sb-sec-lbl">My Business</div>
+      <div class="ni on"><span class="ni-ico">🏫</span> Book of Business <span class="ni-pill">265</span></div>
+      <div class="ni"><span class="ni-ico">📣</span> Campaigns <span class="ni-pill">1,060</span></div>
+      <div class="ni"><span class="ni-ico">👕</span> Apparel &amp; Stores <span class="ni-pill">208</span></div>
+      <div class="ni"><span class="ni-ico">💼</span> Budget Sessions</div>
+    </div>
+    <div class="sb-sec">
+      <div class="sb-sec-lbl">Tools</div>
+      <div class="ni"><span class="ni-ico">🌐</span> My Rep Page</div>
+      <div class="ni"><span class="ni-ico">🗺</span> Territory Map</div>
+      <div class="ni"><span class="ni-ico">📦</span> Catalog</div>
+    </div>
+  </nav>
+  <div class="sb-foot">
+    <div class="av">CR</div>
+    <div><div class="sb-name">Charlie Rankin</div><div class="sb-role">Founder · Active</div></div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <div class="breadcrumb">
+      <a>Dashboard</a><span>›</span>
+      <a>Book of Business</a><span>›</span>
+      <a>Brevard County</a><span>›</span>
+      <strong>Melbourne High School</strong>
+    </div>
+    <div class="topbar-actions">
+      <button class="btn btn-ghost">+ Add Note</button>
+      <button class="btn btn-outline">+ New Campaign</button>
+      <button class="btn btn-gold">+ New Store</button>
+    </div>
+  </header>
+
+  <div class="content">
+
+    <!-- SCHOOL HEADER -->
+    <div class="school-header">
+      <div class="sh-hero">
+        <div class="sh-top">
+          <div class="school-logo-placeholder">MHS</div>
+          <div class="sh-title-block">
+            <div class="sh-name">Melbourne High School</div>
+            <div class="sh-meta">
+              <div class="sh-meta-item">Brevard County</div>
+              <div class="sh-meta-item">High School</div>
+              <div class="sh-meta-item">74 Bulldog Blvd, Melbourne FL 32901</div>
+              <div class="sh-meta-item">Rep: Charlie Rankin</div>
+            </div>
+            <div class="sh-badges">
+              <span class="badge b-active">Active Account</span>
+              <span style="display:inline-flex;align-items:center;gap:3px;padding:2px 9px;border-radius:3px;background:rgba(240,180,41,.1);color:var(--gold);font-family:'Barlow Condensed',sans-serif;font-size:9.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;">⭐ InstaRaise Premium</span>
+              <span class="badge b-product">Band · Orchestra · Chorus</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- KPI ROW - REAL DATA -->
+      <div class="sh-kpis">
+        <div class="sh-kpi">
+          <div class="sh-kpi-lbl">Lifetime Raised</div>
+          <div class="sh-kpi-val" style="color:var(--gold)">$257,399</div>
+          <div class="sh-kpi-sub">Since F21 · 5 seasons</div>
+        </div>
+        <div class="sh-kpi">
+          <div class="sh-kpi-lbl">Campaigns</div>
+          <div class="sh-kpi-val">21</div>
+          <div class="sh-kpi-sub">Band · Orchestra · Chorus</div>
+        </div>
+        <div class="sh-kpi">
+          <div class="sh-kpi-lbl">Avg per Campaign</div>
+          <div class="sh-kpi-val" style="color:var(--green)">$12,257</div>
+          <div class="sh-kpi-sub">Across all programs</div>
+        </div>
+        <div class="sh-kpi">
+          <div class="sh-kpi-lbl">Contacts on File</div>
+          <div class="sh-kpi-val">6</div>
+          <div class="sh-kpi-sub">Directors · Admin · Boosters</div>
+        </div>
+        <div class="sh-kpi">
+          <div class="sh-kpi-lbl">Apparel Orders</div>
+          <div class="sh-kpi-val" style="color:var(--purple)">1</div>
+          <div class="sh-kpi-sub">S25 Choir Camp · $329 net</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TABS -->
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--r);overflow:hidden">
+      <div class="tabs">
+        <div class="tab on" onclick="switchTab('campaigns',this)">Campaigns <span class="tab-ct">21</span></div>
+        <div class="tab" onclick="switchTab('contacts',this)">Contacts <span class="tab-ct">6</span></div>
+        <div class="tab" onclick="switchTab('apparel',this)">Apparel &amp; Stores <span class="tab-ct">1</span></div>
+        <div class="tab" onclick="switchTab('notes',this)">Notes &amp; Activity</div>
+        <div class="tab" onclick="switchTab('files',this)">Files &amp; Assets</div>
+      </div>
+
+      <!-- CAMPAIGNS TAB -->
+      <div class="tab-content on" id="tab-campaigns">
+        <div class="camp-head">
+          <div class="th"></div>
+          <div class="th">Campaign</div>
+          <div class="th">Raised</div>
+          <div class="th">Goal</div>
+          <div class="th">Net Profit</div>
+          <div class="th">Type</div>
+          <div class="th">Status</div>
+        </div>
+
+        <!-- F25 campaigns - real data -->
+        <div class="camp-row">
+          <div><div class="season-ico ico-f">F25</div></div>
+          <div><div class="camp-name">Melbourne High School Band</div><div class="camp-sub">Aug 2025 · InstaRaise Donation</div></div>
+          <div><div class="money">$17,250</div></div>
+          <div><div class="money">$35,000</div><div class="money-sub">49% of goal</div></div>
+          <div><div class="profit-val" style="color:var(--green)">$15,525</div></div>
+          <div><span class="badge b-donation">Donation</span></div>
+          <div><span class="badge b-done">Ended</span></div>
+        </div>
+        <div class="camp-row">
+          <div><div class="season-ico ico-f">F25</div></div>
+          <div><div class="camp-name">Melbourne High School Chorus</div><div class="camp-sub">Sep–Oct 2025 · InstaRaise Donation</div></div>
+          <div><div class="money">$13,662</div></div>
+          <div><div class="money">$15,000</div><div class="money-sub">91% of goal</div></div>
+          <div><div class="profit-val" style="color:var(--green)">$11,522</div></div>
+          <div><span class="badge b-donation">Donation</span></div>
+          <div><span class="badge b-done">Ended</span></div>
+        </div>
+        <div class="camp-row">
+          <div><div class="season-ico ico-f">F25</div></div>
+          <div><div class="camp-name">Melbourne High School Orchestra</div><div class="camp-sub">Sep–Oct 2025 · InstaRaise Donation</div></div>
+          <div><div class="money">$13,582</div></div>
+          <div><div class="money">$15,000</div><div class="money-sub">91% of goal</div></div>
+          <div><div class="profit-val" style="color:var(--green)">$13,056</div></div>
+          <div><span class="badge b-donation">Donation</span></div>
+          <div><span class="badge b-done">Ended</span></div>
+        </div>
+        <div class="camp-row">
+          <div><div class="season-ico ico-f">F25</div></div>
+          <div><div class="camp-name">Melbourne High School Band</div><div class="camp-sub">Oct–Nov 2025 · Poppin Popcorn</div></div>
+          <div><div class="money">$13,313</div></div>
+          <div><div class="money">$15,000</div><div class="money-sub">89% of goal</div></div>
+          <div><div class="profit-val" style="color:var(--green)">$10,594</div></div>
+          <div><span class="badge b-product">Product</span></div>
+          <div><span class="badge b-done">Ended</span></div>
+        </div>
+
+        <!-- S25 -->
+        <div class="camp-row" style="background:rgba(77,166,255,.02)">
+          <div><div class="season-ico ico-s">S25</div></div>
+          <div><div class="camp-name">Melbourne High School Orchestra</div><div class="camp-sub">Mar–Apr 2025 · Donation</div></div>
+          <div><div class="money">$7,910</div></div>
+          <div><div class="money" style="color:var(--muted)">—</div></div>
+          <div><div class="profit-val" style="color:var(--muted)">—</div></div>
+          <div><span class="badge b-donation">Donation</span></div>
+          <div><span class="badge b-done">Ended</span></div>
+        </div>
+        <div class="camp-row" style="background:rgba(77,166,255,.02)">
+          <div><div class="season-ico ico-s">S25</div></div>
+          <div><div class="camp-name">Melbourne High School Chorus</div><div class="camp-sub">Apr–May 2025 · Donation</div></div>
+          <div><div class="money">$5,365</div></div>
+          <div><div class="money" style="color:var(--muted)">—</div></div>
+          <div><div class="profit-val" style="color:var(--muted)">—</div></div>
+          <div><span class="badge b-donation">Donation</span></div>
+          <div><span class="badge b-done">Ended</span></div>
+        </div>
+        <div class="camp-row" style="background:rgba(77,166,255,.02)">
+          <div><div class="season-ico ico-s">S25</div></div>
+          <div><div class="camp-name">Melbourne High School Chorus</div><div class="camp-sub">Apr–Jul 2025 · Donation</div></div>
+          <div><div class="money">$1,890</div></div>
+          <div><div class="money">$2,000</div><div class="money-sub">95% of goal</div></div>
+          <div><div class="profit-val" style="color:var(--muted)">—</div></div>
+          <div><span class="badge b-donation">Donation</span></div>
+          <div><span class="badge b-done">Ended</span></div>
+        </div>
+
+        <!-- F24 -->
+        <div class="camp-row">
+          <div><div class="season-ico ico-f">F24</div></div>
+          <div><div class="camp-name">Melbourne High School Band</div><div class="camp-sub">Aug–Sep 2024 · Donation</div></div>
+          <div><div class="money">$20,037</div></div>
+          <div><div class="money" style="color:var(--muted)">—</div></div>
+          <div><div class="profit-val" style="color:var(--muted)">—</div></div>
+          <div><span class="badge b-donation">Donation</span></div>
+          <div><span class="badge b-done">Ended</span></div>
+        </div>
+        <div class="camp-row">
+          <div><div class="season-ico ico-f">F24</div></div>
+          <div><div class="camp-name">Melbourne High School Chorus</div><div class="camp-sub">Sep–Oct 2024 · Donation</div></div>
+          <div><div class="money">$9,955</div></div>
+          <div><div class="money" style="color:var(--muted)">—</div></div>
+          <div><div class="profit-val" style="color:var(--muted)">—</div></div>
+          <div><span class="badge b-donation">Donation</span></div>
+          <div><span class="badge b-done">Ended</span></div>
+        </div>
+        <div class="camp-row">
+          <div><div class="season-ico ico-f">F24</div></div>
+          <div><div class="camp-name">Melbourne High School Band</div><div class="camp-sub">Oct–Nov 2024 · Product</div></div>
+          <div><div class="money">$7,506</div></div>
+          <div><div class="money" style="color:var(--muted)">—</div></div>
+          <div><div class="profit-val" style="color:var(--muted)">—</div></div>
+          <div><span class="badge b-product">Product</span></div>
+          <div><span class="badge b-done">Ended</span></div>
+        </div>
+
+        <!-- S24 -->
+        <div class="camp-row" style="background:rgba(77,166,255,.02)">
+          <div><div class="season-ico ico-s">S24</div></div>
+          <div><div class="camp-name">Melbourne High School Chorus</div><div class="camp-sub">Mar 2024 · Product</div></div>
+          <div><div class="money">$6,184</div></div>
+          <div><div class="money" style="color:var(--muted)">—</div></div>
+          <div><div class="profit-val" style="color:var(--green)">$729</div></div>
+          <div><span class="badge b-product">Product</span></div>
+          <div><span class="badge b-done">Ended</span></div>
+        </div>
+        <div class="camp-row" style="background:rgba(77,166,255,.02)">
+          <div><div class="season-ico ico-s">S24</div></div>
+          <div><div class="camp-name">Melbourne High School Chorus</div><div class="camp-sub">May–Jul 2024 · Donation</div></div>
+          <div><div class="money">$1,540</div></div>
+          <div><div class="money" style="color:var(--muted)">—</div></div>
+          <div><div class="profit-val" style="color:var(--muted)">—</div></div>
+          <div><span class="badge b-donation">Donation</span></div>
+          <div><span class="badge b-done">Ended</span></div>
+        </div>
+
+        <!-- F23 -->
+        <div class="camp-row">
+          <div><div class="season-ico ico-f">F23</div></div>
+          <div><div class="camp-name">Melbourne High School Band</div><div class="camp-sub">Jul–Aug 2023 · Donation</div></div>
+          <div><div class="money">$29,483</div></div>
+          <div><div class="money" style="color:var(--muted)">—</div></div>
+          <div><div class="profit-val" style="color:var(--muted)">—</div></div>
+          <div><span class="badge b-donation">Donation</span></div>
+          <div><span class="badge b-done">Ended</span></div>
+        </div>
+        <div class="camp-row">
+          <div><div class="season-ico ico-f">F23</div></div>
+          <div><div class="camp-name">Melbourne High School Orchestra</div><div class="camp-sub">Sep–Oct 2023 · Donation</div></div>
+          <div><div class="money">$10,065</div></div>
+          <div><div class="money" style="color:var(--muted)">—</div></div>
+          <div><div class="profit-val" style="color:var(--muted)">—</div></div>
+          <div><span class="badge b-donation">Donation</span></div>
+          <div><span class="badge b-done">Ended</span></div>
+        </div>
+        <div class="camp-row">
+          <div><div class="season-ico ico-f">F23</div></div>
+          <div><div class="camp-name">Melbourne High School Chorus</div><div class="camp-sub">Sep–Oct 2023 · Donation</div></div>
+          <div><div class="money">$7,751</div></div>
+          <div><div class="money" style="color:var(--muted)">—</div></div>
+          <div><div class="profit-val" style="color:var(--muted)">—</div></div>
+          <div><span class="badge b-donation">Donation</span></div>
+          <div><span class="badge b-done">Ended</span></div>
+        </div>
+        <div class="camp-row">
+          <div><div class="season-ico ico-f">F23</div></div>
+          <div><div class="camp-name">Melbourne High School Band</div><div class="camp-sub">Oct–Nov 2023 · Product</div></div>
+          <div><div class="money">$9,871</div></div>
+          <div><div class="money" style="color:var(--muted)">—</div></div>
+          <div><div class="profit-val" style="color:var(--green)">$1,788</div></div>
+          <div><span class="badge b-product">Product</span></div>
+          <div><span class="badge b-done">Ended</span></div>
+        </div>
+
+        <!-- F22 -->
+        <div class="camp-row">
+          <div><div class="season-ico ico-f">F22</div></div>
+          <div><div class="camp-name">Melbourne High School Band</div><div class="camp-sub">Aug–Sep 2022 · Donation</div></div>
+          <div><div class="money">$20,305</div></div>
+          <div><div class="money" style="color:var(--muted)">—</div></div>
+          <div><div class="profit-val" style="color:var(--muted)">—</div></div>
+          <div><span class="badge b-donation">Donation</span></div>
+          <div><span class="badge b-done">Ended</span></div>
+        </div>
+        <div class="camp-row">
+          <div><div class="season-ico ico-f">F22</div></div>
+          <div><div class="camp-name">Melbourne High School Orchestra</div><div class="camp-sub">Sep–Oct 2022 · Donation</div></div>
+          <div><div class="money">$9,315</div></div>
+          <div><div class="money" style="color:var(--muted)">—</div></div>
+          <div><div class="profit-val" style="color:var(--muted)">—</div></div>
+          <div><span class="badge b-donation">Donation</span></div>
+          <div><span class="badge b-done">Ended</span></div>
+        </div>
+        <div class="camp-row">
+          <div><div class="season-ico ico-f">F22</div></div>
+          <div><div class="camp-name">Melbourne High School Chorus</div><div class="camp-sub">Nov–Dec 2022 · Product</div></div>
+          <div><div class="money">$12,305</div></div>
+          <div><div class="money" style="color:var(--muted)">—</div></div>
+          <div><div class="profit-val" style="color:var(--muted)">—</div></div>
+          <div><span class="badge b-product">Product</span></div>
+          <div><span class="badge b-done">Ended</span></div>
+        </div>
+        <div class="camp-row">
+          <div><div class="season-ico ico-f">F22</div></div>
+          <div><div class="camp-name">Melbourne High School Band</div><div class="camp-sub">Oct–Nov 2022 · Product</div></div>
+          <div><div class="money">$9,127</div></div>
+          <div><div class="money" style="color:var(--muted)">—</div></div>
+          <div><div class="profit-val" style="color:var(--green)">$1,568</div></div>
+          <div><span class="badge b-product">Product</span></div>
+          <div><span class="badge b-done">Ended</span></div>
+        </div>
+
+        <!-- F21 -->
+        <div class="camp-row">
+          <div><div class="season-ico ico-f">F21</div></div>
+          <div><div class="camp-name">Melbourne High School Band</div><div class="camp-sub">Aug–Sep 2021 · Donation · First campaign</div></div>
+          <div><div class="money">$30,983</div></div>
+          <div><div class="money" style="color:var(--muted)">—</div></div>
+          <div><div class="profit-val" style="color:var(--muted)">—</div></div>
+          <div><span class="badge b-donation">Donation</span></div>
+          <div><span class="badge b-done">Ended</span></div>
+        </div>
+
+      </div>
+
+      <!-- CONTACTS TAB -->
+      <div class="tab-content" id="tab-contacts">
+        <div style="padding:14px 18px 10px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between">
+          <div style="font-size:11.5px;color:var(--muted)">6 contacts associated with Melbourne High School</div>
+          <button class="btn btn-ghost" style="font-size:10px">+ Add Contact</button>
+        </div>
+
+        <!-- Real contacts from Airtable -->
+        <div class="contact-card">
+          <div class="c-av" style="background:linear-gradient(135deg,#f0b429,#f5c840)">ME</div>
+          <div>
+            <div class="c-name">Michelle Eggen</div>
+            <div class="c-title">Band Director — Melbourne High School</div>
+            <div class="c-last">Primary contact · 21 campaigns together</div>
+          </div>
+          <div class="c-actions">
+            <div class="c-btn" title="Call">📞</div>
+            <div class="c-btn" title="Email">✉️</div>
+            <div class="c-btn" title="Schedule">📅</div>
+            <div class="c-btn" title="View record">→</div>
+          </div>
+        </div>
+
+        <div class="contact-card">
+          <div class="c-av" style="background:linear-gradient(135deg,#60a5fa,#3b82f6)">DK</div>
+          <div>
+            <div class="c-name">Danny Kilbury</div>
+            <div class="c-title">Music Director — Melbourne High School</div>
+            <div class="c-last">Orchestra programs</div>
+          </div>
+          <div class="c-actions">
+            <div class="c-btn">📞</div>
+            <div class="c-btn">✉️</div>
+            <div class="c-btn">📅</div>
+            <div class="c-btn">→</div>
+          </div>
+        </div>
+
+        <div class="contact-card">
+          <div class="c-av" style="background:linear-gradient(135deg,#10d98a,#059669)">NT</div>
+          <div>
+            <div class="c-name">Natalie Taylor</div>
+            <div class="c-title">Chorus Director — Melbourne High School</div>
+            <div class="c-last">Chorus programs · S25 Choir Camp</div>
+          </div>
+          <div class="c-actions">
+            <div class="c-btn">📞</div>
+            <div class="c-btn">✉️</div>
+            <div class="c-btn">📅</div>
+            <div class="c-btn">→</div>
+          </div>
+        </div>
+
+        <div class="contact-card">
+          <div class="c-av" style="background:linear-gradient(135deg,#a78bfa,#7c3aed)">DG</div>
+          <div>
+            <div class="c-name">MSgt. David Greene</div>
+            <div class="c-title">JROTC Instructor — Melbourne High School</div>
+            <div class="c-last">Admin contact</div>
+          </div>
+          <div class="c-actions">
+            <div class="c-btn">📞</div>
+            <div class="c-btn">✉️</div>
+            <div class="c-btn">📅</div>
+            <div class="c-btn">→</div>
+          </div>
+        </div>
+
+        <div class="contact-card">
+          <div class="c-av" style="background:linear-gradient(135deg,#fb923c,#ea580c)">SL</div>
+          <div>
+            <div class="c-name">Sunny Lulla</div>
+            <div class="c-title">Booster Contact — Melbourne High School</div>
+            <div class="c-last">Booster / Parent organization</div>
+          </div>
+          <div class="c-actions">
+            <div class="c-btn">📞</div>
+            <div class="c-btn">✉️</div>
+            <div class="c-btn">📅</div>
+            <div class="c-btn">→</div>
+          </div>
+        </div>
+
+        <div class="contact-card">
+          <div class="c-av" style="background:linear-gradient(135deg,#f472b6,#db2777)">AC</div>
+          <div>
+            <div class="c-name">Andrew Canella</div>
+            <div class="c-title">Contact — Melbourne High School</div>
+            <div class="c-last">On file since F22</div>
+          </div>
+          <div class="c-actions">
+            <div class="c-btn">📞</div>
+            <div class="c-btn">✉️</div>
+            <div class="c-btn">📅</div>
+            <div class="c-btn">→</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- APPAREL TAB -->
+      <div class="tab-content" id="tab-apparel">
+        <div class="store-head">
+          <div class="th">Store / Order</div>
+          <div class="th">Stage</div>
+          <div class="th">Items</div>
+          <div class="th">Invoice</div>
+          <div class="th">Net</div>
+        </div>
+        <div class="store-row">
+          <div>
+            <div class="camp-name">S25, Melbourne High School Choir Camp</div>
+            <div class="camp-sub">Bulk Order Apparel · S25 · Payment Received</div>
+          </div>
+          <div><span class="badge b-done">Payment Received</span></div>
+          <div><span style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px">41 items</span></div>
+          <div><span style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;color:var(--cream)">$0.00</span></div>
+          <div><span style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;color:var(--green)">$329.37</span></div>
+        </div>
+        <div style="padding:32px;text-align:center;color:var(--muted);font-size:12px">
+          <div style="font-size:24px;margin-bottom:8px;opacity:.3">👕</div>
+          InstaRaise Premium flag suggests future apparel opportunity.<br>
+          <span style="color:var(--gold);cursor:pointer;font-weight:600">+ Create new store for Melbourne HS →</span>
+        </div>
+      </div>
+
+      <!-- NOTES TAB -->
+      <div class="tab-content" id="tab-notes">
+        <div style="padding:14px 18px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">
+          <div style="font-size:11.5px;color:var(--muted)">Conversation log &amp; activity</div>
+          <button class="btn btn-ghost" style="font-size:10px">+ Add Note</button>
+        </div>
+        <div class="note-item">
+          <div class="note-line"><div class="note-dot" style="background:var(--gold)"></div><div class="note-stem"></div></div>
+          <div class="note-body">
+            <div class="note-who">F25 Season Closed</div>
+            <div class="note-text">4 campaigns completed across Band, Orchestra, and Chorus. Total F25 raised: $57,807. Band donation + popcorn product. Orchestra and Chorus donation only. InstaRaise Premium active.</div>
+            <div class="note-time">November 2025 · Auto-logged</div>
+          </div>
+        </div>
+        <div class="note-item">
+          <div class="note-line"><div class="note-dot" style="background:var(--blue)"></div><div class="note-stem"></div></div>
+          <div class="note-body">
+            <div class="note-who">InstaRaise Premium — July 2025</div>
+            <div class="note-text">Melbourne High School enrolled in InstaRaise Premium for July 2025 season. Confirmed with Michelle Eggen.</div>
+            <div class="note-time">July 2025 · Charlie Rankin</div>
+          </div>
+        </div>
+        <div class="note-item">
+          <div class="note-line"><div class="note-dot" style="background:var(--purple)"></div><div class="note-stem"></div></div>
+          <div class="note-body">
+            <div class="note-who">S25 Choir Camp Bulk Order</div>
+            <div class="note-text">Natalie Taylor ordered 41 items for Choir Camp. Payment received. $329.37 net.</div>
+            <div class="note-time">Spring 2025 · Charlie Rankin</div>
+          </div>
+        </div>
+        <div class="note-item">
+          <div class="note-line"><div class="note-dot" style="background:var(--green)"></div></div>
+          <div class="note-body">
+            <div class="note-who">Account Created — F21</div>
+            <div class="note-text">First campaign: Melbourne High School Band raised $30,983. Became a multi-program account by F22.</div>
+            <div class="note-time">August 2021 · Charlie Rankin</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FILES TAB -->
+      <div class="tab-content" id="tab-files">
+        <div style="padding:32px;text-align:center;color:var(--muted);font-size:12px">
+          <div style="font-size:28px;margin-bottom:10px;opacity:.3">📁</div>
+          School logo, art assets, kickoff PDFs, and banner images<br>will sync here from Cloudinary when connected.
+          <div style="margin-top:14px"><button class="btn btn-ghost">Upload File</button></div>
+        </div>
+      </div>
+
+    </div><!-- /tabbed panel -->
+
+  </div><!-- /content -->
+</main>
+
+<script>
+function switchTab(id, el) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('on'));
+  document.getElementById('tab-' + id).classList.add('on');
+  el.classList.add('on');
+}
+</script>
+</body>
+</html>
