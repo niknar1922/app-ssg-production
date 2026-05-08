@@ -657,21 +657,35 @@ async function handleLogin() {
   }
 }
 
+const ENABLE_AUTO_LOGIN = false;
+
 // ── CHECK EXISTING SESSION ON LOAD ──
 (function checkSession() {
+
+  if (!ENABLE_AUTO_LOGIN) return;
+
   try {
     const raw = localStorage.getItem('ssg_session');
     if (!raw) return;
+
     const session = JSON.parse(raw);
+
     if (session.expiresAt && Date.now() < session.expiresAt) {
       const bar = document.getElementById('sessionBar');
+
       bar.textContent = `✓ Welcome back, ${session.repName} — loading dashboard`;
+
       bar.classList.add('show');
-      setTimeout(() => { window.location.href = 'ssg-dashboard.html'; }, 800);
+
+      setTimeout(() => {
+        window.location.href = 'ssg-dashboard.html';
+      }, 800);
     }
+
   } catch(e) {
     localStorage.removeItem('ssg_session');
   }
+
 })();
 </script>
 </body>
